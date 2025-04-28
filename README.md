@@ -1,55 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reproductor de Stream en Vivo</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
   <style>
-    body {
-      background-color: #000;
+    html, body {
       margin: 0;
       padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      background: #000;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
     }
+
     video {
-      width: 90%;
-      max-width: 960px;
-      height: auto;
-      border: 4px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      background-color: #000;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <video id="video" controls autoplay muted></video>
+  <video id="video" autoplay muted playsinline></video>
 
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
     const video = document.getElementById('video');
-    const videoSrc = 'https://shlsakamai4.akamaized.net/hlsorigin/gulfstream_hd_fm_771/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1745856172&h=1a7ae109f62686506f5bc0aa4221f986&type=live';
+    const src = "https://shlsakamai3.akamaized.net/hlsorigin/tvg_hd_fm_2200/chunklist.m3u8?stream=philadelphia_mbr&cust=TVG&user=&t=1745420992&h=60c0c1772084cc2dd40168517a261cbc&type=live";
 
     if (Hls.isSupported()) {
       const hls = new Hls();
-      hls.loadSource(videoSrc);
+      hls.loadSource(src);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play();
-      });
-      hls.on(Hls.Events.ERROR, function (event, data) {
-        console.error('HLS error:', data);
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function () {
+      video.src = src;
+      video.addEventListener('loadedmetadata', () => {
         video.play();
       });
-    } else {
-      alert('Tu navegador no soporta reproducción HLS.');
     }
+
+    // Click para pantalla completa
+    video.addEventListener('click', () => {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    });
   </script>
 </body>
 </html>
