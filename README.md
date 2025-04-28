@@ -27,7 +27,7 @@
 
   <script>
     const video = document.getElementById('video');
-    const videoSrc = 'https://tvcanales.short.gy/señal1eeuu2200.m3u8';
+const src = "https://shlsakamai4.akamaized.net/hlsorigin/philadelphia_hd_fm_2200/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1745856172&h=1a7ae109f62686506f5bc0aa4221f986&type=live";
 
     if (Hls.isSupported()) {
       const hls = new Hls();
