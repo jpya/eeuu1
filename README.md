@@ -27,7 +27,7 @@
   </style>
 </head>
 <body>
-  <video id="video" autoplay muted playsinline></video>
+  <video id="video" autoplay muted playsinline></video> 
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
