@@ -53,7 +53,7 @@
   <script>
     const video = document.getElementById('video');
     const loading = document.getElementById('loading');
-    const src = "https://shlsakamai4.akamaized.net/hlsorigin/capitalotb_hd_fm_2200/chunklist.m3u8?stream=philadelphia_mbr&cust=TVG&user=&t=1746016125&h=f1aec7a91180c7a28a62278fe860a741&type=live";
+const src = "https://shlsakamai4.akamaized.net/hlsorigin/capitalotb_hd_fm_2200/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1746017731&h=3c94311c392a1942c2487e26dfc0179c&type=live";
 
     function showLoading() {
       loading.style.display = 'block';
