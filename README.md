@@ -1,9 +1,9 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title></title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Player</title>
   <style>
     html, body {
       margin: 0;
@@ -14,25 +14,56 @@
       overflow: hidden;
     }
 
-    video {
-      position: fixed;
+    #video {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
       background-color: #000;
-      cursor: pointer;
+      cursor: none;
+    }
+
+    #loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 8px solid rgba(255, 255, 255, 0.2);
+      border-top: 8px solid #fff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      z-index: 10;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <video id="video" autoplay muted playsinline></video> 
+  <div id="loading"></div>
+  <video id="video" autoplay muted playsinline></video>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
     const video = document.getElementById('video');
-const src = "https://shlsakamai4.akamaized.net/hlsorigin/gulfstream_hd_fm_2200/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1745975960&h=c3f6eca2c3556a64439915d49ae753a3&type=live";
+    const loading = document.getElementById('loading');
+    const src = "https://shlsakamai4.akamaized.net/hlsorigin/gulfstream_hd_fm_2200/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1745975960&h=c3f6eca2c3556a64439915d49ae753a3&type=live";
+
+    function showLoading() {
+      loading.style.display = 'block';
+    }
+
+    function hideLoading() {
+      loading.style.display = 'none';
+    }
+
+    showLoading(); // Mostrar al inicio
 
     if (Hls.isSupported()) {
       const hls = new Hls();
@@ -41,14 +72,27 @@ const src = "https://shlsakamai4.akamaized.net/hlsorigin/gulfstream_hd_fm_2200/c
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play();
       });
+      hls.on(Hls.Events.BUFFERING, showLoading);
+      hls.on(Hls.Events.BUFFER_APPENDED, hideLoading);
+      hls.on(Hls.Events.ERROR, function (event, data) {
+        console.warn('Error de HLS', data);
+        showLoading(); // Si hay error, mostrar carga
+      });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = src;
       video.addEventListener('loadedmetadata', () => {
         video.play();
+        hideLoading();
       });
+      video.addEventListener('waiting', showLoading);
+      video.addEventListener('playing', hideLoading);
+      video.addEventListener('error', showLoading); // En caso de error en iOS
+    } else {
+      showLoading(); // No compatible
+      console.warn('Este navegador no soporta HLS');
     }
 
-    // Click para pantalla completa
+    // Pantalla completa al tocar
     video.addEventListener('click', () => {
       if (video.requestFullscreen) {
         video.requestFullscreen();
