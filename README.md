@@ -104,7 +104,7 @@
     const audioBtn = document.getElementById('audioBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-const src = "https://shlsakamai3.akamaized.net/hlsorigin/churchill_downs_hd_fm_2200/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1746141590&h=723d12a0f0e7c8a766dc04b9d351b1f7&type=live";
+const src = "https://shlsakamai4.akamaized.net/hlsorigin/capitalotb_hd_fm_2200/chunklist.m3u8?stream=gulfstream_mbr&cust=TVG&user=&t=1746187337&h=7988b66b96ca4884f3ab237e2840e610&type=live";
 
     function showLoading() {
       loading.style.display = 'block';
